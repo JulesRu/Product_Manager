@@ -10,4 +10,13 @@ public class Smartphone extends Product{
     public String getMadeIn() {
         return madeIn;
     }
+
+    @Override
+    public boolean matches(String search) {
+        if (super.matches(search)) {
+            return true;
+        } else {
+            return getMadeIn().contains(search);
+        }
+    }
 }

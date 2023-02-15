@@ -1,4 +1,4 @@
-public class Product {
+public abstract class Product {
     protected int id;
     protected String name;
     protected int price;
@@ -7,6 +7,14 @@ public class Product {
         this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public boolean matches(String search) {
+        if (getName().contains(search)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public int getId() {
@@ -38,4 +46,6 @@ public class Product {
 
         this.price = price;
     }
+
+
 }

@@ -10,9 +10,8 @@ public class ProductRepositoryTest {
     Smartphone smartphone2 = new Smartphone(42, "iPhone 5s", 15000, "China");
     Smartphone smartphone3 = new Smartphone(2, "Huawei nova", 14500, "China");
 
-
     @Test
-    public void shouldSaveAndFind() {
+    public void findByIdFound() {
 
         ProductRepository repo = new ProductRepository();
 
@@ -23,60 +22,63 @@ public class ProductRepositoryTest {
         repo.save(smartphone3);
         repo.save(smartphone2);
 
-        Product[] expected = {book1, book2, book3, smartphone1, smartphone3, smartphone2};
-        Product[] actual = repo.findAll();
+        Product expected = book2;
+        Product actual = repo.findById(88);
 
-        Assertions.assertArrayEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void shouldRemoveByIdOne() {
+    public void findByIdNotFound() {
 
         ProductRepository repo = new ProductRepository();
 
         repo.save(book1);
         repo.save(book2);
         repo.save(book3);
-        repo.removeById(88);
+        repo.save(smartphone1);
+        repo.save(smartphone3);
+        repo.save(smartphone2);
 
-        Product[] expected = {book1, book3};
-        Product[] actual = repo.findAll();
+        Product expected = null;
+        Product actual = repo.findById(66);
 
-        Assertions.assertArrayEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    public void shouldRemoveByIdAll() {
+    public void removeByIdExist() {
 
         ProductRepository repo = new ProductRepository();
 
         repo.save(book1);
         repo.save(book2);
         repo.save(book3);
+        repo.save(smartphone1);
+        repo.save(smartphone3);
+        repo.save(smartphone2);
         repo.removeById(88);
-        repo.removeById(89);
-        repo.removeById(87);
 
-        Product[] expected = {};
+        Product[] expected = {book1, book3, smartphone1, smartphone3, smartphone2};
         Product[] actual = repo.findAll();
 
         Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
-    public void shouldSaveAfterRemoval() {
+    public void removeByIdNotFound() {
 
         ProductRepository repo = new ProductRepository();
 
         repo.save(book1);
         repo.save(book2);
-        repo.removeById(88);
-        repo.save(book2);
+        repo.save(book3);
+        repo.save(smartphone1);
+        repo.save(smartphone3);
+        repo.save(smartphone2);
 
-        Product[] expected = {book1, book2};
-        Product[] actual = repo.findAll();
-
-        Assertions.assertArrayEquals(expected, actual);
-
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            repo.removeById(64);
+        });
     }
 }

@@ -2,13 +2,33 @@ public class ProductRepository {
 
     private Product[] items = new Product[0];
 
-    public void save(Product item) {
+
+    public Product findById(int id) {
+        Product tmp = new Product(0, "", 0);
+        for (Product item : items) {
+            if (item.getId() == id) {
+                tmp = item;
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public void save(Product tmpitem) {
+
         Product[] tmp = new Product[items.length + 1];
+        for (Product item : items) {
+            if (item.getId() == tmpitem.id) {
+                throw new AlreadyExistsException(
+                        "Элемент с ID " + tmpitem.id + " уже есть в Вашей корзине."
+                );
+            }
+        }
         for (int i = 0; i < items.length; i++) {
             tmp[i] = items[i];
         }
-        //System.arraycopy(items, 0, tmp, 0, items.length);
-        tmp[tmp.length - 1] = item;
+
+        tmp[tmp.length - 1] = tmpitem;
         items = tmp;
     }
 
@@ -34,14 +54,5 @@ public class ProductRepository {
         items = tmp;
     }
 
-    public Product findById(int id) {
-        Product tmp = new Product(0, "", 0);
-        for (Product item : items) {
-            if (item.getId() == id) {
-                tmp = item;
-                return item;
-            }
-        }
-        return null;
-    }
 }
+

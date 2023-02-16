@@ -81,4 +81,33 @@ public class ProductRepositoryTest {
             repo.removeById(64);
         });
     }
+
+    @Test
+    public void saveAndFindAll() {
+
+        ProductRepository repo = new ProductRepository();
+
+        repo.save(book1);
+        repo.save(smartphone2);
+
+        Product[] expected = {book1, smartphone2};
+        Product[] actual = repo.findAll();
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldNotSaveSameIdItem() {
+
+        ProductRepository repo = new ProductRepository();
+        Book book4 = new Book(87, "Атлант расправил плечи. А есть А", 780, "Айн Рэнд");
+
+        repo.save(book1);
+        repo.save(book2);
+
+
+        Assertions.assertThrows(AlreadyExistsException.class, () -> {
+            repo.save(book4);
+        });
+    }
 }

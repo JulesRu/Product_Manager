@@ -83,7 +83,7 @@ public class ProductRepositoryTest {
     }
 
     @Test
-    public void saveAndFindAll() {
+    public void shouldSaveByNewId() {
 
         ProductRepository repo = new ProductRepository();
 

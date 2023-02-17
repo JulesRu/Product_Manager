@@ -14,21 +14,18 @@ public class ProductRepository {
         return null;
     }
 
-    public void save(Product tmpitem) {
-
-        Product[] tmp = new Product[items.length + 1];
-        for (Product item : items) {
-            if (item.getId() == tmpitem.id) {
-                throw new AlreadyExistsException(
-                        "Элемент с ID " + tmpitem.id + " уже есть в Вашей корзине."
-                );
-            }
+    public void save(Product item) {
+        if (findById(item.id) != null) {
+            throw new AlreadyExistsException(
+                    "Элемент с id " + item.id + " уже есть в Вашей корзине"
+            );
         }
+        Product[] tmp = new Product[items.length + 1];
         for (int i = 0; i < items.length; i++) {
             tmp[i] = items[i];
         }
 
-        tmp[tmp.length - 1] = tmpitem;
+        tmp[tmp.length - 1] = item;
         items = tmp;
     }
 
